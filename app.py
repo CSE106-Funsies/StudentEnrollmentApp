@@ -8,7 +8,7 @@ from flask_login import UserMixin, LoginManager, login_required, logout_user, cu
 
 app = Flask(__name__)
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///admin.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SECRET_KEY'] = 'mysecret'
 
 db = SQLAlchemy(app)
@@ -29,6 +29,18 @@ class User(db.Model, UserMixin):
     accountType = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(120), nullable=False, unique=True)
     password = db.Column(db.String(128), nullable=False)
+    
+    authenticated = db.Column(db.Boolean, default=False)
+
+    def is_active(self):
+        return True
+    def get_id(self):
+        return self.username
+    def is_authenticated(self):
+        return self.authenticated
+    def is_anonymous(self):
+        return False
+
     
 # only include this Model if we want different tables for Student
 # class Student(db.Model):
