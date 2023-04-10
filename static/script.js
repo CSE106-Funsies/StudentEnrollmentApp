@@ -20,7 +20,7 @@ function login(){
 
     xhttp.onload = function() {
         console.log(this.responseText)
-        document.getElementById("demo").innerHTML = this.responseText;
+        // document.getElementById("demo").innerHTML = this.responseText;
 
     };
 }

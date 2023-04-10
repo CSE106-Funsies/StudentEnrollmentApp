@@ -12,4 +12,7 @@ CREATE TABLE person (
 
 INSERT INTO person (Name, Age) VALUES ('John', 25);
 
-INSERT INTO user(name, accountType, username, password, authenticated) VALUES('Jose Santos', 'student', 'jsantos', 'happy', False);
+INSERT INTO user(name, accountType, username, password_hash, authenticated) VALUES('Jose Santos', 'student', 'jsantos', 'happy', False);
+
+
+INSERT INTO user(name, accountType, username, password_hash, authenticated) VALUES('Ralph Jenkins', 'professor', 'rjenkins', 'jenk', False);

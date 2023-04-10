@@ -5,6 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 from flask_login import UserMixin, LoginManager, login_required, logout_user, current_user, login_user
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError
+from wtforms.validators import DataRequired, EqualTo, Length
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
@@ -22,14 +26,21 @@ login_manager.login_view = '/'
 def load_user(user_id):
     return db.session.query(User).get(int(user_id))
 
+# Create a Form Class
+
+class LoginForm(FlaskForm):
+    username = StringField("UserName", validators=[DataRequired()])
+    password = PasswordField("Password", validators=[DataRequired()])
+    submit = SubmitField("Submit")    
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     accountType = db.Column(db.String(50), nullable=False)
     username = db.Column(db.String(120), nullable=False, unique=True)
-    password = db.Column(db.String(128), nullable=False)
     
+    password_hash = db.Column(db.String(128), nullable=False)
+
     authenticated = db.Column(db.Boolean, default=False)
 
     def is_active(self):
@@ -46,36 +57,46 @@ class User(db.Model, UserMixin):
 admin.add_view(ModelView(User, db.session))
 
 # Login Page for Student
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
-    return render_template("LoginPage.html")
+    name = None
+    password = None
+    form = LoginForm()
+    # Validate From
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if form.password.data == user.password_hash:
+                login_user(user)
 
-@app.route("/login/", methods=['POST', 'GET'])
-def login():
-    requestedData = request.json
-    usrName = requestedData['username']
-    usrPsswrd = requestedData['password']
-
-    # user = db.session.query(User.id).filter_by(username=usrName).first()
-    curUser = User.query.filter_by(username=usrName).first()
-
-    if curUser is not None:
-        print("user found")
-        print(curUser.accountType)
-        if curUser.password == usrPsswrd:
-            print("password is a go")
-            curUser.authenticated = True
-            db.session.commit()
-            login_user(curUser, remember=True)
-            # return "hi"
-            return redirect(url_for('StudentDash'))
+                flash("Login Succesfull")
+                if user.accountType == 'student':
+                    return redirect(url_for('StudentDash'))
+                else:
+                    return redirect(url_for('ProfessorDash'))
+            else:
+                flash("Wrong Password - Try again!")
+                return render_template('LoginPage.html',
+                               username='',
+                               password='',
+                               form=form)
+        else:
+            flash("User does not exist.")
+            return render_template('LoginPage.html',
+                               username='',
+                               password='',
+                               form=form)
+        # name = form.name.data
+        # password = form.password.data
+        # form.name.data = ''
+        # form.password.data = ''
+        flash("Form Submitted Successfully")
     else:
-        print("user not found")
-        return False 
-
-    print(usrName)
-    print(usrPsswrd)
-    return "hi"
+        return render_template('LoginPage.html',
+                               username='',
+                               password='',
+                               form=form)
+        # return redirect(url_for('StudentDash'))
 
 
 @app.route("/logout")
@@ -92,16 +113,20 @@ def logout():
 @login_required
 def StudentDash():
     user = current_user
-    # print(user)
+    # # print(user)
     userFullName = user.name
     print(userFullName)
-    print("kk")
-    return render_template("StudentDashboard.html", fullName=userFullName)
+    # print("kk")
+    # return render_template("StudentDashboard.html", fullName="jess")
+    return render_template("StudentDashboard.html", fullName=current_user.name)
+
 
 # Dashboard Page for Professor
 @app.route("/ProfessorDashboard")
 def ProfessorDash():
-    return render_template("TeacherDashboard.html")
+    user = current_user
+    userFullName = user.name
+    return render_template("TeacherDashboard.html", fullName=userFullName)
 
 
 if __name__ == "__main__":
