@@ -18,8 +18,16 @@ INSERT INTO user(name, accountType, username, password_hash, authenticated) VALU
 
 INSERT INTO user(name, accountType, username, password_hash, authenticated) VALUES('Ralph Jenkins', 'professor', 'rjenkins', 'jenk', False);
 
+INSERT INTO user(name, accountType, username, password_hash, authenticated) VALUES('Betty Brown', 'student', 'bBrown', 'bb', False);
+
+
+INSERT INTO user(name, accountType, username, password_hash, authenticated) VALUES('Nancy Little', 'student', 'nLittle', 'nl', False);
 
 
 INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Math 101', 'Ralph Jenkins', 'MWF 10:00-10:50 AM', 8, 'Jose Santos', 92);
+INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Math 101', 'Ralph Jenkins', 'MWF 10:00-10:50 AM', 8, 'Nancy Little', 53);
 
-INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Physics 121', 'Susan Walker', 'TR 11:00-11:50 AM', 10, 'Nancy Little', 53);
+-- adding betty brown course
+INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Math 101', 'Ralph Jenkins', 'MWF 10:00-10:50 AM', 8, 'Betty Brown', 65);
+
+INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Physics 121', 'Susan Walker', 'TR 11:00-11:50 AM', 10, 'Betty Brown', 53);

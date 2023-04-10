@@ -135,17 +135,41 @@ def StudentDash():
     personalCourses = Course.query.filter_by(student=userFullName)
     # count how many i get by the query above
 
-    inputCourse = courses
+    inputCourse = personalCourses
     count = inputCourse.count()
     print(count)
+
+    studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
+    
+    # getStudentsEnrolledDictionary(personalCourses, courses)
 
     # print("kk")
     # return render_template("StudentDashboard.html", fullName="jess")
     return render_template("StudentDashboard.html", 
                            fullName=current_user.name,
                            courses = inputCourse,
-                           courseCount = count)
+                           courseCount = count,
+                           courseDict = studentCount)
 
+def getStudentsEnrolledDictionary(inputCourseList, overallCourses):
+    if ((inputCourseList==None) or (overallCourses==None)):
+        return {}
+    personalDict = {}
+    returnDict = {}
+    for course in inputCourseList:
+        if course.courseName not in personalDict:
+            personalDict[course.courseName] = 1
+        else:
+            personalDict[course.courseName] = personalDict[course.courseName] + 1
+
+    for course in overallCourses:
+        if course.courseName in personalDict:
+            if course.courseName not in returnDict:
+                returnDict[course.courseName] = 1
+            else:
+                returnDict[course.courseName] = returnDict[course.courseName] + 1
+    print(returnDict)
+    return returnDict
 
 # Dashboard Page for Professor
 @app.route("/ProfessorDashboard")

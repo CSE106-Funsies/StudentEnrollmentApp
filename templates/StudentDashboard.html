@@ -14,13 +14,16 @@
             <th>Course Name</th>
             <th>Professor</th>
             <th>Time</th>
+            <th>Students Enrolled</th>
             <th>Add Class</th>
         </tr>
+        {{courseDict}}
         {% for course in courses %}
             <tr>
                 <td>{{course.courseName}}</td>
                 <td>{{course.professor}}</td>
                 <td>{{course.time}}</td>
+                <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
                 <td> -/+</td>
             </tr>
         {% endfor %}
