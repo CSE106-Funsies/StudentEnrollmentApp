@@ -21,3 +21,5 @@ INSERT INTO user(name, accountType, username, password_hash, authenticated) VALU
 
 
 INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Math 101', 'Ralph Jenkins', 'MWF 10:00-10:50 AM', 8, 'Jose Santos', 92);
+
+INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Physics 121', 'Susan Walker', 'TR 11:00-11:50 AM', 10, 'Nancy Little', 53);

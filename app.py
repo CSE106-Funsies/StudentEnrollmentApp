@@ -64,7 +64,9 @@ class Course(db.Model):
 
     
 
-admin.add_view(ModelView(User, Course, db.session))
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Course, db.session))
+
 
 # Login Page for Student
 @app.route("/", methods=['GET', 'POST'])
@@ -127,9 +129,22 @@ def StudentDash():
     # # print(user)
     userFullName = user.name
     print(userFullName)
+    # grab all the courses in the database
+    courses = Course.query.order_by(Course.courseName)
+    # Grab all the courses from the database that student is in
+    personalCourses = Course.query.filter_by(student=userFullName)
+    # count how many i get by the query above
+
+    inputCourse = courses
+    count = inputCourse.count()
+    print(count)
+
     # print("kk")
     # return render_template("StudentDashboard.html", fullName="jess")
-    return render_template("StudentDashboard.html", fullName=current_user.name)
+    return render_template("StudentDashboard.html", 
+                           fullName=current_user.name,
+                           courses = inputCourse,
+                           courseCount = count)
 
 
 # Dashboard Page for Professor
@@ -138,6 +153,7 @@ def StudentDash():
 def ProfessorDash():
     user = current_user
     userFullName = user.name
+    
     return render_template("TeacherDashboard.html", fullName=userFullName)
 
 
