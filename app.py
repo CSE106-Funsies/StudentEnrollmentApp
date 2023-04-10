@@ -153,8 +153,17 @@ def StudentDash():
 def ProfessorDash():
     user = current_user
     userFullName = user.name
+    # Grab all the courses from the database that the professor is teaching
+    personalCourses = Course.query.filter_by(professor=userFullName).order_by(Course.courseName)
+    # Count how many courses the professor is teaching
     
-    return render_template("TeacherDashboard.html", fullName=userFullName)
+    count = personalCourses.count()
+   
+    # return render_template("StudentDashboard.html", fullName="jess")
+    return render_template("TeacherDashboard.html", 
+                           fullName=current_user.name,
+                           courses = personalCourses,
+                           courseCount = count)
 
 
 if __name__ == "__main__":
