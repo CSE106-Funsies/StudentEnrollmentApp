@@ -9,13 +9,22 @@
 <body>
     <h1>Hello {{fullName}} </h1>
     <p>Student is logged in.</p>
-
-    {% for course in courses %}
-        <p>{{course.courseName}}</p>
-        <p>{{course.professor}}</p>
-        <p>{{course.time}}</p>
-        <!-- <p>{{course.name}}</p> -->
-    {% endfor %}
+    <table>
+        <tr>
+            <th>Course Name</th>
+            <th>Professor</th>
+            <th>Time</th>
+            <th>Add Class</th>
+        </tr>
+        {% for course in courses %}
+            <tr>
+                <td>{{course.courseName}}</td>
+                <td>{{course.professor}}</td>
+                <td>{{course.time}}</td>
+                <td> -/+</td>
+            </tr>
+        {% endfor %}
+    </table>
 
     <a href="{{url_for('logout')}}">Logout</a>
 </body>
