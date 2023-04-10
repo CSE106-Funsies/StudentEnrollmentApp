@@ -116,7 +116,8 @@ def logout():
     user.authenticated = False
     db.session.commit()
     logout_user()
-    return render_template('/')
+    return redirect(url_for('index'))
+    # return render_template('/')
 
 # Dashboard Page for Student
 @app.route("/StudentDashboard", methods=['POST', 'GET'])
@@ -133,6 +134,7 @@ def StudentDash():
 
 # Dashboard Page for Professor
 @app.route("/ProfessorDashboard")
+@login_required
 def ProfessorDash():
     user = current_user
     userFullName = user.name
