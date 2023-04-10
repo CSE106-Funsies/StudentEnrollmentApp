@@ -3,7 +3,7 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_sqlalchemy import SQLAlchemy
 
-from flask_login import UserMixin, LoginManager, login_required, logout_user, current_user 
+from flask_login import UserMixin, LoginManager, login_required, logout_user, current_user, login_user
 
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ login_manager.login_view = '/'
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.query(User).get(int(user_id))
 
 
 class User(db.Model, UserMixin):
@@ -35,28 +35,12 @@ class User(db.Model, UserMixin):
     def is_active(self):
         return True
     def get_id(self):
-        return self.username
+        # return self.username
+        return self.id
     def is_authenticated(self):
         return self.authenticated
     def is_anonymous(self):
         return False
-
-    
-# only include this Model if we want different tables for Student
-# class Student(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(50), nullable=False)
-#     age = db.Column(db.Integer, nullable=False)
-#     username = None
-#     password = None
-# only include this Model if we want different tables for Professor
-
-# class Professor(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String(50), nullable=False)
-#     age = db.Column(db.Integer, nullable=False)
-#     username = None
-#     password = None
 
 
 admin.add_view(ModelView(User, db.session))
@@ -80,19 +64,39 @@ def login():
         print(curUser.accountType)
         if curUser.password == usrPsswrd:
             print("password is a go")
-            login
+            curUser.authenticated = True
+            db.session.commit()
+            login_user(curUser, remember=True)
+            # return "hi"
+            return redirect(url_for('StudentDash'))
     else:
         print("user not found")
+        return False 
 
     print(usrName)
     print(usrPsswrd)
     return "hi"
 
+
+@app.route("/logout")
+@login_required
+def logout():
+    user = current_user
+    user.authenticated = False
+    db.session.commit()
+    logout_user()
+    return render_template('/')
+
 # Dashboard Page for Student
-@app.route("/StudentDashboard")
+@app.route("/StudentDashboard", methods=['POST', 'GET'])
 @login_required
 def StudentDash():
-    return render_template("StudentDashboard.html", fullName="Izaac Ramirez")
+    user = current_user
+    # print(user)
+    userFullName = user.name
+    print(userFullName)
+    print("kk")
+    return render_template("StudentDashboard.html", fullName=userFullName)
 
 # Dashboard Page for Professor
 @app.route("/ProfessorDashboard")

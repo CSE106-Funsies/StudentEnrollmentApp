@@ -19,6 +19,8 @@ function login(){
     xhttp.send(JSON.stringify(body));
 
     xhttp.onload = function() {
-        // 
+        console.log(this.responseText)
+        document.getElementById("demo").innerHTML = this.responseText;
+
     };
 }
