@@ -5,28 +5,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://kit.fontawesome.com/958e1ca54e.js" crossorigin="anonymous"></script>
     <title>Student Login</title>
 </head>
 
 <body>
-    <h1>University of California, Merced</h1>
-    <div>
-        <h2>Login Page</h2>
+    <div class="form">
+        <h1>University of California, Merced</h1>
         <div>
-            <p>Username</p>
-            <!-- text field to enter name -->
-            <input type="text" name="username" id="personUsername">
+            <h2>Login Page</h2>
+            <div>
+                <p>Username</p>
+                <!-- text field to enter name -->
+                <input type="text" name="username" id="personUsername">
+            </div>
+            <div>
+                <p>Password</p>
+                <!-- text field to enter password -->
+                <input type="password" name="password" id="personPassword">
+            </div>
+            <div>
+                <button type="submit" onclick="login()">Login</button>
+            </div>
         </div>
-        <div>
-            <p>Password</p>
-            <!-- text field to enter password -->
-            <input type="password" name="password" id="personPassword">
-        </div>
-        <div>
-            <button type="submit" onclick="login()">Login</button>
-        </div>
+    
     </div>
-
+    
     <script src="{{url_for('static', filename='/script.js') }}"></script>
 
 </body>
