@@ -1,6 +1,7 @@
 DROP TABLE person;
 DROP TABLE professor;
 DROP TABLE user;
+DROP TABLE course;
 
 CREATE TABLE person (
     id INTEGER PRIMARY KEY,
@@ -16,3 +17,7 @@ INSERT INTO user(name, accountType, username, password_hash, authenticated) VALU
 
 
 INSERT INTO user(name, accountType, username, password_hash, authenticated) VALUES('Ralph Jenkins', 'professor', 'rjenkins', 'jenk', False);
+
+
+
+INSERT INTO course(courseName, professor, time, capacity, student, studentGrade) VALUES ('Math 101', 'Ralph Jenkins', 'MWF 10:00-10:50 AM', 8, 'Jose Santos', 92);

@@ -53,8 +53,18 @@ class User(db.Model, UserMixin):
     def is_anonymous(self):
         return False
 
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    courseName = db.Column(db.String(50), nullable=False)
+    professor = db.Column(db.String(50), nullable=False)
+    time = db.Column(db.String(80), nullable=False)
+    capacity = db.Column(db.Integer, nullable=False)
+    student = db.Column(db.String(50), nullable=False)
+    studentGrade = db.Column(db.Integer, nullable=False)
 
-admin.add_view(ModelView(User, db.session))
+    
+
+admin.add_view(ModelView(User, Course, db.session))
 
 # Login Page for Student
 @app.route("/", methods=['GET', 'POST'])
