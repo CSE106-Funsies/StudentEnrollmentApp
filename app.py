@@ -271,18 +271,20 @@ def ProfessorDash():
                            courseDict = studentCount)
 
 
-@app.route("/StudentInfo")
+@app.route("/StudentInfo/<course_name>")
 @login_required
-def StudentInfo():
-    course_name = request.args.get('courseName')
-    
-    #get all the students in the given course name
+def StudentInfo(course_name):
+    # Get all the students in the given course name
     students = Course.query.filter_by(courseName=course_name).all()
     
     return render_template("StudentInfo.html",
                            fullName=current_user.name,
-                           courses = students)
+                           courses=students)
 
+
+
+def edit():
+    return "edit"
 
 if __name__ == "__main__":
     with app.app_context():

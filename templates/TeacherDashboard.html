@@ -18,7 +18,7 @@
         </tr>
         {% for course in courses %}
             <tr>
-                <td> <a href="{{url_for('StudentInfo', courseName=course.courseName)}}">{{course.courseName}}</a></td>
+                <td> <a href="{{ url_for('StudentInfo', course_name=course.courseName) }}">{{course.courseName}}</a></td>
                 <td>{{course.professor}}</td>
                 <td>{{course.time}}</td>
                 <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
