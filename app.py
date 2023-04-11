@@ -26,7 +26,6 @@ login_manager.login_view = '/'
 def load_user(user_id):
     return db.session.query(User).get(int(user_id))
 
-# Create a Form Class
 
 class LoginForm(FlaskForm):
     username = StringField("UserName", validators=[DataRequired()])
@@ -61,7 +60,6 @@ class Course(db.Model):
     capacity = db.Column(db.Integer, nullable=False)
     student = db.Column(db.String(50), nullable=False)
     studentGrade = db.Column(db.Integer, nullable=False)
-
 
     def __init__(self, cName, pName, time, cap, stu, stuGrade):
         self.courseName = cName
@@ -324,12 +322,24 @@ def StudentInfo(course_name):
     
     return render_template("StudentInfo.html",
                            fullName=current_user.name,
-                           courses=students)
+                           courses=students, 
+                           course_name=course_name)
 
 
-
+@app.route("/edit", methods=['POST', 'GET'])
+@login_required
 def edit():
-    return "edit"
+    first_name = request.form.get('editStudent')
+    new_grade = request.form.get('editGrade')
+    course_name = request.form.get('course_name')
+    
+    student = Course.query.filter_by(courseName=course_name, student=first_name).first()
+    
+    if student:
+        student.studentGrade = new_grade
+        db.session.commit()
+    
+    return redirect(url_for('StudentInfo', course_name=course_name))
 
 if __name__ == "__main__":
     with app.app_context():

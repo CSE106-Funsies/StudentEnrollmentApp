@@ -22,8 +22,9 @@
         </table>
 
         <form action="/edit" method="POST">
+            <input type="hidden" name="course_name" value="{{course_name}}" />
             <label for="editStu">Full Name:</label><br>
-            <input type="text" id="editStu" name="editStu" /><br>
+            <input type="text" id="editStu" name="editStudent" /><br>
             <label for="editGrade">New Grade:</label><br>
             <input type="text" id="editGrade" name="editGrade" />
             <button type="submit">Edit</button>
