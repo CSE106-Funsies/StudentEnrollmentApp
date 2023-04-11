@@ -7,6 +7,9 @@
     <title>Student Dashboard</title>
 </head>
 <body>
+    {% for message in get_flashed_messages() %}
+    {{ message }}
+    {% endfor %}
     <h1>Hello {{fullName}} </h1>
     <p>Student is logged in.</p>
     <table>
@@ -17,7 +20,6 @@
             <th>Students Enrolled</th>
             <th>Add Class</th>
         </tr>
-        {{courseDict}}
         {% for course in courses %}
             <tr>
                 <td>{{course.courseName}}</td>

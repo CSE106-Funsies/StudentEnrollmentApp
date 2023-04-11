@@ -177,6 +177,12 @@ def getStudentsEnrolledDictionary(inputCourseList, overallCourses):
 def ProfessorDash():
     user = current_user
     userFullName = user.name
+    userType = user.accountType
+    # if we are loggin in, but they try to get access to teach portal
+    if userType != 'professor':
+        # redirect the non-professor account to the student dash
+        flash("Students not allowed to acess professor page")
+        return redirect(url_for('StudentDash'))
     # Grab all the courses from the database that the professor is teaching
     personalCourses = Course.query.filter_by(professor=userFullName).order_by(Course.courseName)
     # Count how many courses the professor is teaching
