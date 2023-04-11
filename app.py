@@ -162,11 +162,17 @@ def StudentDash(ownCourse):
     inputCourse = personalCourses
     allCourse = courses
     count = inputCourse.count()
-    print(count)
+    # print(count)
 
-    studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
+    # dictionary of all students with their count per class
+    totalStudentCounts = getTotalStudentCount(courses)
+    # dictionary of count for the classes the user is in
+    studentCountOfPersonalSchedule = getStudentsEnrolledDictionary(personalCourses, courses)
+
+    # an array of all the classes (even if the student isn't in it, and there are no duplicates)
+    uniqueAllClassList = getUniqueInputList(courses)
     
-    print(f"ownCourse {ownCourse}")
+    # print(f"ownCourse {ownCourse}")
     # getStudentsEnrolledDictionary(personalCourses, courses)
 
 
@@ -177,8 +183,34 @@ def StudentDash(ownCourse):
                            courses = inputCourse,
                            allCourses=allCourse,
                            courseCount = count,
-                           courseDict = studentCount,
-                           ownCourse=ownCourse)
+                           studentCountOfPersonalSchedule = studentCountOfPersonalSchedule,
+                           ownCourse=ownCourse,
+                           totalStudentCounts=totalStudentCounts,
+                           uniqueAllClassList=uniqueAllClassList)
+
+def getUniqueInputList(inputList):
+    listSet = set()
+    listArr = []
+    for item in inputList:
+        if item.courseName not in listSet:
+            listSet.add(item.courseName)
+            listArr.append(item)
+    return listArr
+
+def getTotalStudentCount(inputList):
+    if inputList == None:
+        return {}
+    studentCount = {}
+    print(inputList.count())
+    for i in inputList:
+        if i.courseName not in studentCount:
+            studentCount[i.courseName] = 1
+        else:
+            studentCount[i.courseName] = studentCount[i.courseName] + 1
+    print("inside of getTotalStudentCount function")
+    print(studentCount)
+    return studentCount
+
 
 def getStudentsEnrolledDictionary(inputCourseList, overallCourses):
     if ((inputCourseList==None) or (overallCourses==None)):
@@ -197,7 +229,6 @@ def getStudentsEnrolledDictionary(inputCourseList, overallCourses):
                 returnDict[course.courseName] = 1
             else:
                 returnDict[course.courseName] = returnDict[course.courseName] + 1
-    print(returnDict)
     return returnDict
 
 

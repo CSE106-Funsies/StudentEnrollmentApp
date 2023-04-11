@@ -31,7 +31,7 @@
                     <td>{{course.courseName}}</td>
                     <td>{{course.professor}}</td>
                     <td>{{course.time}}</td>
-                    <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
+                    <td>{{studentCountOfPersonalSchedule[course.courseName]}} / {{course.capacity}}</td>
                     <!-- <td> -/+</td> -->
                     <!-- <td> -->
                         <!-- <button onclick="window.location.href='/addRemove/'">Test</button> -->
@@ -52,12 +52,12 @@
                     <th>Students Enrolled</th>
                     <th>Add Class</th>
                 </tr>
-                {% for course in allCourses %}
+                {% for course in uniqueAllClassList %}
                 <tr>
                     <td>{{course.courseName}}</td>
                     <td>{{course.professor}}</td>
                     <td>{{course.time}}</td>
-                    <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
+                    <td>{{totalStudentCounts[course.courseName]}} / {{course.capacity}}</td>
                     <!-- <td> -/+</td> -->
                     <td>
                         <!-- <button onclick="window.location.href='/addRemove/{{course.courseName}}'">Test</button> -->
