@@ -141,7 +141,7 @@ def addRemoveCourse(CourseName='RandomClass'):
     db.session.query(Course).filter_by(courseName=CourseName, student=curUser.name).delete();
     db.session.commit()
 
-    return redirect(url_for('StudentDash'))
+    return redirect(url_for('StudentDash', ownCourse=False))
 
 @app.route("/addStudentToCourse/<CourseName>")
 @login_required
@@ -157,12 +157,12 @@ def addStudent(CourseName):
     print("selected course capacity")
     print(specificCourseCapacity)
     if totalStudentCounts[CourseName] >= specificCourseCapacity:
-        return redirect(url_for('StudentDash'))
+        return redirect(url_for('StudentDash', ownCourse=False))
     else:
         newStudentToCourse = Course(CourseName, specificCourse.professor, specificCourse.time, specificCourseCapacity, current_user.name, 100)
         db.session.add(newStudentToCourse)
         db.session.commit()
-        return redirect(url_for('StudentDash'))
+        return redirect(url_for('StudentDash', ownCourse=False))
 
     
 
