@@ -61,7 +61,14 @@
                     <!-- <td> -/+</td> -->
                     <td>
                         <!-- <button onclick="window.location.href='/addRemove/{{course.courseName}}'">Test</button> -->
-                        <button onclick="window.location.href='/addRemove/'">+/-</button>
+                        {% if course.courseName in studentCountOfPersonalSchedule %}
+                        <button onclick="window.location.href='/addRemove/{{course.courseName}}'">-</button>
+                        {% else %}
+                        <button onclick="window.location.href=''">+</button>
+                        {% endif %}
+
+                        <!-- <button onclick="window.location.href='/addRemove/'">Remove
+                        </button> -->
                     </td>
                 </tr>
                 {% endfor %}
