@@ -188,7 +188,7 @@ def ProfessorDash():
     # grab all the courses in the database
     courses = Course.query.order_by(Course.courseName)
     # Grab all the courses from the database that student is in
-    personalCourses = Course.query.filter_by(professor=userFullName).distinct(Course.courseName).all()
+    personalCourses = Course.query.filter_by(professor=userFullName).all()
     studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
 
 
@@ -200,11 +200,6 @@ def ProfessorDash():
             professorCoursesSet.add(c.courseName)
             professorCourseArray.append(c)
 
-    print(professorCourseArray)
-    print(len(professorCourseArray))
-    for i in professorCourseArray:
-        print(i.courseName)
-    
     inputCourse = personalCourses
     # count = inputCourse.count()
     # print(count)
@@ -221,7 +216,12 @@ def ProfessorDash():
 def StudentInfo():
     course_name = request.args.get('courseName')
     
-    return render_template("StudentInfo.html")
+    #get all the students in the given course name
+    students = Course.query.filter_by(courseName=course_name).all()
+    
+    return render_template("StudentInfo.html",
+                           fullName=current_user.name,
+                           courses = students)
 
 
 if __name__ == "__main__":
