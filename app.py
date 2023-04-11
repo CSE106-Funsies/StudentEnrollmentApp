@@ -183,17 +183,24 @@ def ProfessorDash():
         # redirect the non-professor account to the student dash
         flash("Students not allowed to acess professor page")
         return redirect(url_for('StudentDash'))
-    # Grab all the courses from the database that the professor is teaching
-    personalCourses = Course.query.filter_by(professor=userFullName).order_by(Course.courseName)
-    # Count how many courses the professor is teaching
     
-    count = personalCourses.count()
+    # grab all the courses in the database
+    courses = Course.query.order_by(Course.courseName)
+    # Grab all the courses from the database that student is in
+    personalCourses = Course.query.filter_by(professor=userFullName)
+    
+    studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
+    
+    inputCourse = personalCourses
+    count = inputCourse.count()
+    print(count)
    
     # return render_template("StudentDashboard.html", fullName="jess")
     return render_template("TeacherDashboard.html", 
                            fullName=current_user.name,
                            courses = personalCourses,
-                           courseCount = count)
+                           courseCount = count,
+                           courseDict = studentCount)
 
 
 if __name__ == "__main__":

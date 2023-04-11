@@ -21,7 +21,7 @@
                 <td><a href="/course/{{course.id}}"><button>{{course.courseName}}</button></a></td>
                 <td>{{course.professor}}</td>
                 <td>{{course.time}}</td>
-                <td> {{course.student|length}} / {{course.capacity}}</td>
+                <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
             </tr>
         {% endfor %}
     </table>
