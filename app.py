@@ -171,6 +171,7 @@ def getStudentsEnrolledDictionary(inputCourseList, overallCourses):
     print(returnDict)
     return returnDict
 
+
 # Dashboard Page for Professor
 @app.route("/ProfessorDashboard")
 @login_required
@@ -187,19 +188,31 @@ def ProfessorDash():
     # grab all the courses in the database
     courses = Course.query.order_by(Course.courseName)
     # Grab all the courses from the database that student is in
-    personalCourses = Course.query.filter_by(professor=userFullName)
-    
+    personalCourses = Course.query.filter_by(professor=userFullName).distinct(Course.courseName).all()
     studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
+
+
+    # list of courses professor teaches (unique courses)
+    professorCoursesSet = set()
+    professorCourseArray = []
+    for c in personalCourses:
+        if c.courseName not in professorCoursesSet:
+            professorCoursesSet.add(c.courseName)
+            professorCourseArray.append(c)
+
+    print(professorCourseArray)
+    print(len(professorCourseArray))
+    for i in professorCourseArray:
+        print(i.courseName)
     
     inputCourse = personalCourses
-    count = inputCourse.count()
-    print(count)
-   
+    # count = inputCourse.count()
+    # print(count)
     # return render_template("StudentDashboard.html", fullName="jess")
     return render_template("TeacherDashboard.html", 
                            fullName=current_user.name,
-                           courses = personalCourses,
-                           courseCount = count,
+                           courses = professorCourseArray,
+                           courseCount = 3,
                            courseDict = studentCount)
 
 
