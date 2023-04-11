@@ -216,6 +216,14 @@ def ProfessorDash():
                            courseDict = studentCount)
 
 
+@app.route("/StudentInfo")
+@login_required
+def StudentInfo():
+    course_name = request.args.get('courseName')
+    
+    return render_template("StudentInfo.html")
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
