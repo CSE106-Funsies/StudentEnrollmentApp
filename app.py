@@ -62,6 +62,15 @@ class Course(db.Model):
     student = db.Column(db.String(50), nullable=False)
     studentGrade = db.Column(db.Integer, nullable=False)
 
+
+    def __init__(self, cName, pName, time, cap, stu, stuGrade):
+        self.courseName = cName
+        self.professor = pName
+        self.time = time
+        self.capacity = cap
+        self.student = stu
+        self.studentGrade = stuGrade
+
     
 
 admin.add_view(ModelView(User, db.session))
@@ -133,6 +142,42 @@ def addRemoveCourse(CourseName='RandomClass'):
     db.session.commit()
 
     return redirect(url_for('StudentDash'))
+
+@app.route("/addStudentToCourse/<CourseName>")
+@login_required
+def addStudent(CourseName):
+
+    courses = Course.query.order_by(Course.courseName)
+    totalStudentCounts = getTotalStudentCount(courses)
+
+    specificCourse = getSpecificCourse(courses, CourseName)
+    specificCourseCapacity = specificCourse.capacity
+    print("inside add student function")
+    print(totalStudentCounts)
+    print("selected course capacity")
+    print(specificCourseCapacity)
+    if totalStudentCounts[CourseName] >= specificCourseCapacity:
+        return redirect(url_for('StudentDash'))
+    else:
+        newStudentToCourse = Course(CourseName, specificCourse.professor, specificCourse.time, specificCourseCapacity, current_user.name, 100)
+        db.session.add(newStudentToCourse)
+        db.session.commit()
+        return redirect(url_for('StudentDash'))
+
+    
+
+    print("end of add student function")
+
+def getSpecificCourse(courseList, courseName):
+    for course in courseList:
+        if course.courseName == courseName:
+            return course
+
+def courseAtMaximumCapacity(courseName):
+    if courseName == None:
+        return False
+    
+    
 
 @app.route("/switchStuDash/")
 @login_required

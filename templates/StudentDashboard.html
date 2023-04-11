@@ -65,7 +65,7 @@
                         {% if course.courseName in studentCountOfPersonalSchedule %}
                         <button onclick="window.location.href='/addRemove/{{course.courseName}}'">-</button>
                         {% else %}
-                        <button onclick="window.location.href=''">+</button>
+                        <button onclick="window.location.href='/addStudentToCourse/{{course.courseName}}'">+</button>
                         {% endif %}
 
                         <!-- <button onclick="window.location.href='/addRemove/'">Remove
