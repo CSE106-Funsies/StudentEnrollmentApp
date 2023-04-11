@@ -7,9 +7,6 @@
     <title>Student Dashboard</title>
 </head>
 <body>
-    {% for message in get_flashed_messages() %}
-    {{ message }}
-    {% endfor %}
     <h1>Hello {{fullName}} </h1>
     <p>Student is logged in.</p>
     <table>
@@ -20,6 +17,7 @@
             <th>Students Enrolled</th>
             <th>Add Class</th>
         </tr>
+        {{courseDict}}
         {% for course in courses %}
             <tr>
                 <td>{{course.courseName}}</td>
@@ -32,5 +30,6 @@
     </table>
 
     <a href="{{url_for('logout')}}">Logout</a>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/style2.css')}}">
 </body>
 </html>
