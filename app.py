@@ -121,10 +121,34 @@ def logout():
     return redirect(url_for('index'))
     # return render_template('/')
 
-# Dashboard Page for Student
-@app.route("/StudentDashboard", methods=['POST', 'GET'])
+@app.route("/addRemove/", defaults={'CourseName':None})
+@app.route("/addRemove/<CourseName>")
 @login_required
-def StudentDash():
+def addRemoveCourse(CourseName='RandomClass'):
+    print("Name of course")
+    print(CourseName)
+    curUser = current_user
+    # user = User.query.filter_by(username=form.username.data).first()
+    db.session.query(Course).filter_by(courseName=CourseName, student=curUser.name).delete();
+    db.session.commit()
+
+    return redirect(url_for('StudentDash'))
+
+@app.route("/switchStuDash/")
+@login_required
+def switchStuDash():
+    return redirect(url_for('StudentDash', ownCourse=False))
+
+# Dashboard Page for Student
+@app.route("/StudentDashboard/", defaults={'ownCourse':None}, methods=['POST', 'GET'])
+@app.route("/StudentDashboard/<ownCourse>", methods=['POST', 'GET'])
+@login_required
+def StudentDash(ownCourse):
+    # ownCourse = ownCourse.lower() == 'true'
+    if ownCourse == None:
+        ownCourse = True
+    else:
+        ownCourse = False
     user = current_user
     # # print(user)
     userFullName = user.name
@@ -136,20 +160,25 @@ def StudentDash():
     # count how many i get by the query above
 
     inputCourse = personalCourses
+    allCourse = courses
     count = inputCourse.count()
     print(count)
 
     studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
     
+    print(f"ownCourse {ownCourse}")
     # getStudentsEnrolledDictionary(personalCourses, courses)
+
 
     # print("kk")
     # return render_template("StudentDashboard.html", fullName="jess")
     return render_template("StudentDashboard.html", 
                            fullName=current_user.name,
                            courses = inputCourse,
+                           allCourses=allCourse,
                            courseCount = count,
-                           courseDict = studentCount)
+                           courseDict = studentCount,
+                           ownCourse=ownCourse)
 
 def getStudentsEnrolledDictionary(inputCourseList, overallCourses):
     if ((inputCourseList==None) or (overallCourses==None)):

@@ -9,25 +9,65 @@
 <body>
     <h1>Hello {{fullName}} </h1>
     <p>Student is logged in.</p>
-    <table>
-        <tr>
-            <th>Course Name</th>
-            <th>Professor</th>
-            <th>Time</th>
-            <th>Students Enrolled</th>
-            <th>Add Class</th>
-        </tr>
-        {{courseDict}}
-        {% for course in courses %}
-            <tr>
-                <td>{{course.courseName}}</td>
-                <td>{{course.professor}}</td>
-                <td>{{course.time}}</td>
-                <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
-                <td> -/+</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <button onclick="window.location.href='/StudentDashboard'">Your Courses</button>
+    <!-- <button onclick="window.location.href='/switchStuDash/{{True}}'">Your Courses</button> -->
+
+    <button onclick="window.location.href='/StudentDashboard/{{False}}'">Add Courses</button>"
+    <!-- <button onclick="window.location.href='/switchStuDash/'">Add Courses</button> -->
+    {% if ownCourse %}
+        <p>Yes its true</p>
+        <table>
+            <tbody>
+                <p>All Mine</p>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Professor</th>
+                    <th>Time</th>
+                    <th>Students Enrolled</th>
+                    <!-- <th>Add Class</th> -->
+                </tr>
+                {% for course in courses %}
+                <tr>
+                    <td>{{course.courseName}}</td>
+                    <td>{{course.professor}}</td>
+                    <td>{{course.time}}</td>
+                    <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
+                    <!-- <td> -/+</td> -->
+                    <!-- <td> -->
+                        <!-- <button onclick="window.location.href='/addRemove/'">Test</button> -->
+                    <!-- </td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No, it is false</p>
+        <table>
+            <tbody>
+                <p>All Courses</p>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Professor</th>
+                    <th>Time</th>
+                    <th>Students Enrolled</th>
+                    <th>Add Class</th>
+                </tr>
+                {% for course in allCourses %}
+                <tr>
+                    <td>{{course.courseName}}</td>
+                    <td>{{course.professor}}</td>
+                    <td>{{course.time}}</td>
+                    <td>{{courseDict[course.courseName]}} / {{course.capacity}}</td>
+                    <!-- <td> -/+</td> -->
+                    <td>
+                        <!-- <button onclick="window.location.href='/addRemove/{{course.courseName}}'">Test</button> -->
+                        <button onclick="window.location.href='/addRemove/'">+/-</button>
+                    </td>
+                </tr>
+                {% endfor %}
+
+        </table>
+    {% endif %}
 
     <a href="{{url_for('logout')}}">Logout</a>
     <link rel="stylesheet" href="{{ url_for('static', filename='/style2.css')}}">
