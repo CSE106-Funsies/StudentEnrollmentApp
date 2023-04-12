@@ -290,27 +290,25 @@ def ProfessorDash():
     
     # grab all the courses in the database
     courses = Course.query.order_by(Course.courseName)
-    # Grab all the courses from the database that student is in
+    
+    # Grab all the courses from the database that professor teaches
     personalCourses = Course.query.filter_by(professor=userFullName).all()
+    
+    #a function to count all the number of students enrolled in each class
     studentCount = getStudentsEnrolledDictionary(personalCourses, courses)
 
 
-    # list of courses professor teaches (unique courses)
+    # an array of all the classes (even if the professor isn't in it, and there are no duplicates)
     professorCoursesSet = set()
     professorCourseArray = []
     for c in personalCourses:
         if c.courseName not in professorCoursesSet:
             professorCoursesSet.add(c.courseName)
             professorCourseArray.append(c)
-
-    inputCourse = personalCourses
-    # count = inputCourse.count()
-    # print(count)
-    # return render_template("StudentDashboard.html", fullName="jess")
+    
     return render_template("TeacherDashboard.html", 
                            fullName=current_user.name,
                            courses = professorCourseArray,
-                           courseCount = 3,
                            courseDict = studentCount)
 
 
@@ -329,12 +327,15 @@ def StudentInfo(course_name):
 @app.route("/edit", methods=['POST', 'GET'])
 @login_required
 def edit():
+    #collect the data from the form
     first_name = request.form.get('editStudent')
     new_grade = request.form.get('editGrade')
     course_name = request.form.get('course_name')
     
+    #find the student in the database based on the course name and student name
     student = Course.query.filter_by(courseName=course_name, student=first_name).first()
     
+    #if the student exists, update the grade
     if student:
         student.studentGrade = new_grade
         db.session.commit()
