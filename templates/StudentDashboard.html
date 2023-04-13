@@ -16,66 +16,61 @@
         <button onclick="window.location.href='/StudentDashboard/{{False}}'">Add Courses</button>
         <!-- <button onclick="window.location.href='/switchStuDash/'">Add Courses</button> -->
     </span>
-    {% if ownCourse %}
-        <table>
-            <tbody>
+    <div id="DashboardTable">
 
-                <p>Your Courses</p>
-                <tr>
-                    <th>Course Name</th>
-                    <th>Professor</th>
-                    <th>Time</th>
-                    <th>Students Enrolled</th>
-                    <!-- <th>Add Class</th> -->
-                </tr>
-                {% for course in courses %}
-                <tr>
-                    <td>{{course.courseName}}</td>
-                    <td>{{course.professor}}</td>
-                    <td>{{course.time}}</td>
-                    <td>{{studentCountOfPersonalSchedule[course.courseName]}} / {{course.capacity}}</td>
-                    <!-- <td> -/+</td> -->
-                    <!-- <td> -->
-                        <!-- <button onclick="window.location.href='/addRemove/'">Test</button> -->
-                    <!-- </td> -->
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <table>
-            <tbody>
-                <p>All Courses</p>
-                <tr>
-                    <th>Course Name</th>
-                    <th>Professor</th>
-                    <th>Time</th>
-                    <th>Students Enrolled</th>
-                    <th>Add Class</th>
-                </tr>
-                {% for course in uniqueAllClassList %}
-                <tr>
-                    <td>{{course.courseName}}</td>
-                    <td>{{course.professor}}</td>
-                    <td>{{course.time}}</td>
-                    <td>{{totalStudentCounts[course.courseName]}} / {{course.capacity}}</td>
-                    <!-- <td> -/+</td> -->
-                    <td>
-                        <!-- <button onclick="window.location.href='/addRemove/{{course.courseName}}'">Test</button> -->
-                        {% if course.courseName in studentCountOfPersonalSchedule %}
-                        <button onclick="window.location.href='/addRemove/{{course.courseName}}'">-</button>
-                        {% else %}
-                        <button onclick="window.location.href='/addStudentToCourse/{{course.courseName}}'">+</button>
-                        {% endif %}
+        {% if ownCourse %}
+            <table>
+                <tbody>
 
-                        <!-- <button onclick="window.location.href='/addRemove/'">Remove
-                        </button> -->
-                    </td>
-                </tr>
-                {% endfor %}
+                    <p>Your Courses</p>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Professor</th>
+                        <th>Time</th>
+                        <th>Students Enrolled</th>
+                    </tr>
+                    {% for course in courses %}
+                    <tr>
+                        <td>{{course.courseName}}</td>
+                        <td>{{course.professor}}</td>
+                        <td>{{course.time}}</td>
+                        <td>{{studentCountOfPersonalSchedule[course.courseName]}} / {{course.capacity}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <table>
+                <tbody>
+                    <p>All Courses</p>
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Professor</th>
+                        <th>Time</th>
+                        <th>Students Enrolled</th>
+                        <th>Add Class</th>
+                    </tr>
+                    {% for course in uniqueAllClassList %}
+                    <tr>
+                        <td>{{course.courseName}}</td>
+                        <td>{{course.professor}}</td>
+                        <td>{{course.time}}</td>
+                        <td>{{totalStudentCounts[course.courseName]}} / {{course.capacity}}</td>
+                        <td>
+                            {% if course.courseName in studentCountOfPersonalSchedule %}
+                            <button onclick="window.location.href='/addRemove/{{course.courseName}}'">-</button>
+                            {% else %}
+                            <button onclick="window.location.href='/addStudentToCourse/{{course.courseName}}'">+</button>
+                            {% endif %}
 
-        </table>
-    {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+            </table>
+        {% endif %}
+
+    </div>
 
     <a href="{{url_for('logout')}}">Logout</a>
     <link rel="stylesheet" href="{{ url_for('static', filename='/style2.css')}}">
